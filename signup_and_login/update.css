@@ -1,0 +1,28 @@
+#container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#name{
+    width: 150px;
+    margin-top: 7px;
+}
+#quantity{
+    width: 150px;
+    margin-top: 7px;
+}
+#price{
+    width: 150px;
+    margin-top: 7px;
+}
+#update{
+    width: 60px;
+    height: 30px;
+    margin-top: 7px;
+}
+#back{
+    width: 60px;
+    height: 30px;
+    margin-left: 34px;
+    margin-top: 7px;
+}
