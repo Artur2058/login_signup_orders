@@ -4,13 +4,13 @@ let price=document.getElementById("price");
 let create=document.getElementById("create");
 let back=document.getElementById("back");
 
-create.addEventListener("click", cre());
+create.addEventListener("click", cre);
 back.addEventListener("click", ba);
 
 function cre(){
     let name_value=name.value;
     let quantity_value=quantity.value;
-    let price_value=quantity.value;
+    let price_value=price.value;
     fetch("/create_order.html", {
         method:"POST",
         headers: {
@@ -26,7 +26,6 @@ function cre(){
         return response.json();
     })
     .then(data=>{
-
     })
 }
 

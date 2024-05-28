@@ -1,0 +1,19 @@
+#container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#yes{
+    margin-top: 20px;
+    margin-right: 40px;
+    width: 70px;
+    height: 50px;
+    background-color: green;
+}
+#no{
+    margin-top: 20px;
+    margin-left: 40px;
+    width: 70px;
+    height: 50px;
+    background-color: red;
+}

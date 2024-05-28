@@ -28,7 +28,7 @@ function f1() {
                 text_of_login.style.color="green";
                 text_of_login.textContent="Password is right";
                 setTimeout(() => {
-                    window.open("/index3.html")     
+                    window.open("/index3.html", "_parent")     
             }, 1000);
             }
             else if(data.message=="Password is false"){

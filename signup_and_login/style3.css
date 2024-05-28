@@ -1,3 +1,7 @@
+ *{
+    margin: 0;
+    padding: 0;
+ }
  #container{
     display: grid;
     grid-template-columns: 1fr 7fr;
@@ -39,6 +43,7 @@
 #username{
     font-size:xx-large;
     grid-column: 2/2;
+    grid-row: 1;
     text-align: end;
     border: 1px solid black;
 }
@@ -47,21 +52,28 @@
     font-size: xx-large;
     grid-column: 2/2;
     grid-row: 2/2;
-    width: 50%;
-    justify-self: end;
+    background-color: green;
 }
-#update{
-    font-size: xx-large;
-    grid-column: 2/2;
-    grid-row: 2/2;
-    width: 50%;
-}
-
-#table1{
+#table{
     grid-row: 3/6;
+    height:min-content;
+    border-collapse: collapse;
 }
 th{
     border: 1px solid black;
-    align-content: start;
 } 
+#button_of_update{
+    width: max-content;
 
+    height: max-content;
+}
+.update{
+    background-color: greenyellow;
+}
+.delete{
+    background-color: red;
+    margin-left: 10px;
+}
+body{
+    background-color: rgb(183, 220, 255);
+}

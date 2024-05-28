@@ -3,6 +3,10 @@ module.exports=function(sequelize){
      return sequelize.define("orders", {
     userId:{
         type:Sequelize.STRING(255),
+        primaryKey: true,
+    },
+    email:{
+        type:Sequelize.STRING(50),
     },
     name:{
         type:Sequelize.STRING(20),

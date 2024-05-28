@@ -19,10 +19,12 @@
     width: 60px;
     height: 30px;
     margin-top: 7px;
+    background-color: green;
 }
 #back{
     width: 60px;
     height: 30px;
     margin-left: 34px;
     margin-top: 7px;
+    background-color: red;
 }

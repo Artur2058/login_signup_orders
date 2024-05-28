@@ -13,6 +13,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const { cookie, redirect } = require("express/lib/response.js");
 const { decode } = require("punycode");
+const { userInfo } = require("os");
+const orders = require("./db_of_orders/orders.js");
 app.use(cookieParser());
 app.use(express.json());
 app.get("/index3.html", (req, res)=>{
@@ -40,7 +42,7 @@ app.post("/index.html", (req, res)=>{
             a.create(data);
             console.log(data.Password);
             console.log("Successful");
-            res.json({ "message" : "Successful"})
+            res.json({ "message" : "Successful"});
         }
         else{
             console.log("It' wrong");
@@ -60,8 +62,9 @@ app.post("/index2.html", (req, res)=>{
                 a2.create(data2)
                 console.log("succesful");
                 const userId=uuidv4();
-                const token=jwt.sign({email:data2.Email, username:result[i].Name, userid:userId}, secretKey, {expiresIn:"1h"});
+                const token=jwt.sign({email:data2.Email, username:result[i].Name, userId:userId}, secretKey, {expiresIn:"1h"});
                 res.cookie("token", token, {httpOnly:true});
+                console.log(userId)
                 res.json({"message" : "Password is right"});
             }
         }
@@ -79,23 +82,122 @@ app.post("/index3.html", (req, res)=>{
     let token=req.cookies.token;
     jwt.verify(token, secretKey, (err, decode)=>{
         if(err){
-            console.log("error of find username");
+            console.log("error of find username, email and userId");
         }
         else{
             let username=decode.username;
             let userId=decode.userId;
-            res.json({"username":username, "userId":userId});
+            let name=[];
+            let quantity=[];
+            let price=[];
+            let email=[];
+            a3.findAll().then(result=>{
+                result.forEach(element => {
+                    name.push(element.name);
+                    quantity.push(element.quantity);
+                    price.push(element.price);
+                    email.push(element.email);
+                });
+            })
+            .then(()=>{
+                res.json(
+                    {
+                    "username":username, 
+                    "userId":userId,
+                    "name": name,
+                    "quantity": quantity,
+                    "price": price,
+                    "email": email,
+                });
+            })
+            
         }
     })
 })
 
+app.post("/create_order.html", (req, res)=>{
+    let data_of_orders=req.body;
+    let userId;
+    let email;
+    let token=req.cookies.token;
+    jwt.verify(token, secretKey, (err, decode)=>{
+        if(err){
+            console.log("error of userId");
+        }
+        else{
+            userId=decode.userId;
+            email=decode.email;
+            data_of_orders.email=email;
+            data_of_orders.userId=userId;
+            a3.create(data_of_orders);
+            console.log("Your order is accepted");
+            res.json({"message":"Your order is accepted"});              
+        }
+    })
+})
+
+app.post("/update.html", (req, res)=>{
+    let data_of_update=req.body;
+    let token=req.cookies.token;
+    jwt.verify(token, secretKey, (err, decode)=>{
+        if(err){
+            console.log("error of token in post request /update.html");
+        }
+        else{
+            if(data_of_update.name=="" && data_of_update.quantity=="" && data_of_update.price==""){
+                console.log("dfdf")
+            }
+            else{
+            
+            a3.findAll().then(result=>{
+                result.forEach(element => {
+                        a3.update({
+                            name: data_of_update.name,
+                            quantity: data_of_update.quantity,
+                            price: data_of_update.price,
+                        }, {
+                            where: {
+                                name:data_of_update.old_date.name,
+                                quantity:data_of_update.old_date.quantity,
+                                price:data_of_update.old_date.price,
+                            }
+                        })            
+                });
+            })
+        }
+            }
+        
+    })
+})
+
+app.post("/delete.html", (req, res)=>{
+    let data_of_delete=req.body;
+     a3.destroy({
+        where:{
+            name:data_of_delete.deleted_date.name,
+            quantity:data_of_delete.deleted_date.quantity,
+            price:data_of_delete.deleted_date.price,
+        },
+        
+    }).then((result) => {
+        result.id=0;
+    }).catch((err) => {
+    });
+
+    res.json({"message":"date was deleted"});
+})
+
+app.post("/logout.html", (req, res)=>{
+    let data_of_delete=req.body;
+    res.clearCookie("token");
+    res.json({"message":"yes"});
+})
+
+app.listen(3003);
 
 
-app.listen(3000);
 
-
-
-    // a.destroy({
+    // a3.destroy({
     //     where:{},
     //     truncate:true,
     // }).then((result) => {
